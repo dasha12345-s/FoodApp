@@ -2,15 +2,13 @@ import { createContext, useReducer } from "react";
 
 const CartContext = createContext({
   items: [],
-  addItem: (item) => {
-
-  },
+  addItem: (item) => {},
   removeItem: (id) => {}
 });
 
 function cartReduser(state, action){
   if (action.type === 'ADD_ITEM'){
-    const existingCartItemIn = state.items.findIndex((item) => item.id === action.id);
+    const existingCartItemIn = state.items.findIndex((item) => item.id === action.item.id);
 
     const updatedItems = [...state.items];
 
@@ -18,11 +16,11 @@ function cartReduser(state, action){
       const existingItem = state.items[existingCartItemIn]
       const updatedItem = {
         ...existingItem,
-        quantity: existingItem.quantity + 1
+        quantity: existingItem.quantity + 1,
       };
       updatedItems[existingCartItemIn] = updatedItem;
     } else {
-      updatedItems.push({...action.item, quantity: 1})
+      updatedItems.push({ ...action.item, quantity: 1 })
     }
 
     return {...state, items: updatedItems };
@@ -37,7 +35,7 @@ function cartReduser(state, action){
 
       if(existingCartItemIn === 1){
 
-        updatedItems.slice(existingCartItemIn, 1);
+        updatedItems.splice(existingCartItemIn, 1);
       } else {
         const updatedItem = {...existingCartItem,
            quantity: existingCartItem.quantity - 1
